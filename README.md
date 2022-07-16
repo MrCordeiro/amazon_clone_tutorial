@@ -2,7 +2,9 @@
 
 # amazon_clone_tutorial
 
-A new Flutter project.
+As of any Flutter project, this one was created with the IDE's "Create new Flutter project option".
+
+Database located at: cloud.mongodb.com
 
 ## Getting Started
 
