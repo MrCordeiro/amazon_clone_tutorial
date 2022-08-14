@@ -1,5 +1,6 @@
 import 'package:amazon_clone_tutorial/common/widgets/bottom_bar.dart';
 import 'package:amazon_clone_tutorial/constants/global_variables.dart';
+import 'package:amazon_clone_tutorial/features/admin/screens/admin_screen.dart';
 import 'package:amazon_clone_tutorial/features/auth/screens/auth_screen.dart';
 import 'package:amazon_clone_tutorial/features/auth/services/auth_service.dart';
 import 'package:amazon_clone_tutorial/providers/user_provider.dart';
@@ -12,9 +13,7 @@ Future<void> main() async {
   await dotenv.load();
   // MultiProvider is what allows us to use the Provider.of() function across the app.
   runApp(MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (context) => UserProvider())
-      ],
+      providers: [ChangeNotifierProvider(create: (context) => UserProvider())],
       child: const MyApp()));
 }
 
@@ -55,7 +54,9 @@ class _MyAppState extends State<MyApp> {
       // We use it to pass parameters to routes
       onGenerateRoute: (settings) => generateRoute(settings),
       home: Provider.of<UserProvider>(context).user.token.isNotEmpty
-          ? const BottomBar()
+          ? Provider.of<UserProvider>(context).user.type == 'user'
+              ? const BottomBar()
+              : const AdminScreen()
           : const AuthScreen(),
     );
   }
