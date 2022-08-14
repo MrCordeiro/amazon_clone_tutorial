@@ -12,7 +12,7 @@ class BottomBar extends StatefulWidget {
   State<BottomBar> createState() => _BottomBarState();
 }
 
-// https://youtu.be/ylJz7N-dv1E?t=12758
+
 class _BottomBarState extends State<BottomBar> {
   int _page = 0;
   double bottomBarWidth = 42;
