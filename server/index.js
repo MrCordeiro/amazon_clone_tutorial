@@ -1,5 +1,6 @@
 const express = require("express");
 const mongooose = require("mongoose");
+const adminRouter = require("./routes/admin");
 require("dotenv").config();
 
 const authRouter = require("./routes/auth");
@@ -11,6 +12,7 @@ const DB = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@
 // Middleware
 app.use(express.json())
 app.use(authRouter);
+app.use(adminRouter);
 
 // Connections
 mongooose

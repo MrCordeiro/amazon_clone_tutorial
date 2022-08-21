@@ -1,4 +1,4 @@
-<!-- https://youtu.be/ylJz7N-dv1E?t=2709 -->
+<!-- https://youtu.be/ylJz7N-dv1E -->
 
 # amazon_clone_tutorial
 
