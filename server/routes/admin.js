@@ -33,5 +33,19 @@ adminRouter.get("/admin/products", admin, async (req, res) => {
 	}
 });
 
+// Delete product
+adminRouter.delete("/admin/products/:id", admin, async (req, res) => {
+	try {
+		const product = await Product.findByIdAndDelete(req.params.id);
+		// ? Should the image file also be deleted?
+		if (!product) {
+			return res.status(404).json({ error: "Product not found" });
+		}
+		res.status(204).json({ success: "Product deleted" });
+	} catch (e) {
+		res.status(500).json({ error: e.message });
+	}
+});
+
 
 module.exports = adminRouter;
