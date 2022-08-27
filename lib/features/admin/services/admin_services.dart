@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:amazon_clone_tutorial/constants/error_handling.dart';
 import 'package:amazon_clone_tutorial/constants/global_variables.dart';
@@ -10,7 +11,6 @@ import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-// https://youtu.be/ylJz7N-dv1E?t=20915
 class AdminServices {
   void addProduct({
     required BuildContext context,
@@ -50,7 +50,7 @@ class AdminServices {
           category: category);
 
       http.Response res = await http.post(
-        Uri.parse('$uri/admin/add-product'),
+        Uri.parse('$uri/admin/products'),
         headers: {
           'Content-Type': 'application/json; charset=UTF-8',
           'x-auth-token': userProvider.user.token,
@@ -69,5 +69,31 @@ class AdminServices {
     } catch (e) {
       showSnackBar(context, e.toString());
     }
+  }
+
+  // Get all products
+  Future<List<Product>> fetchAllProducts(BuildContext context) async {
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    List<Product> productList = [];
+    try {
+      http.Response res = await http.get(Uri.parse('$uri/admin/products'), headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+        'x-auth-token': userProvider.user.token,
+      });
+
+      httpErrorHandle(
+        response: res,
+        context: context,
+        onSuccess: () {
+          for (var product in jsonDecode(res.body)) {
+            productList.add(Product.fromJson(jsonEncode(product)));
+          }
+        },
+      );
+  
+    } catch (e) {
+      showSnackBar(context, e.toString());
+    }
+    return productList;
   }
 }
