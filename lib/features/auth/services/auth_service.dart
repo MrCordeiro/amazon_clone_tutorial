@@ -51,27 +51,28 @@ class AuthService {
   }) async {
     try {
       http.Response res = await http.post(Uri.parse("$uri/api/signin"),
-          headers: <String, String>{
-            'Content-Type': 'application/json; charset=UTF-8',
-          },
-          body: jsonEncode({
-            "email": email,
-            "password": password,
-          }));
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode({
+          "email": email,
+          "password": password,
+        }));
       httpErrorHandle(
-          response: res,
-          context: context,
-          onSuccess: () async {
-            // Provider stores user data
-            Provider.of<UserProvider>(context, listen: false).setUser(res.body);
-            // SharedPreferences store token in app memory
-            SharedPreferences prefs = await SharedPreferences.getInstance();
-            await prefs.setString(
-                'x-auth-token', jsonDecode(res.body)['token']);
-            // Navigate to Home screen
-            Navigator.pushNamedAndRemoveUntil(
-                context, BottomBar.routeName, (route) => false);
-          });
+        response: res,
+        context: context,
+        onSuccess: () async {
+          // Provider stores user data
+          Provider.of<UserProvider>(context, listen: false).setUser(res.body);
+          // SharedPreferences store token in app memory
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          await prefs.setString(
+            'x-auth-token', jsonDecode(res.body)['token']);
+          // Navigate to Home screen
+          // ignore: use_build_context_synchronously
+          Navigator.pushNamedAndRemoveUntil(
+            context, BottomBar.routeName, (route) => false);
+        });
     } catch (e) {
       showSnackBar(context, e.toString());
     }
