@@ -28,3 +28,9 @@ cd server
 npm install
 npm start
 ```
+
+## Admin screen
+
+There is currently no link to the admin section and back. Instead, users are redirected automatically based on the user's role.
+
+To change a user's role between `user` and `admin`, modify the database directly (yeah yeah, this is a tutorial app; suck it up).
