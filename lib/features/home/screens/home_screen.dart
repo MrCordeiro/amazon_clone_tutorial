@@ -3,6 +3,7 @@ import 'package:amazon_clone_tutorial/features/home/widgets/address_box.dart';
 import 'package:amazon_clone_tutorial/features/home/widgets/carousel_image.dart';
 import 'package:amazon_clone_tutorial/features/home/widgets/deal_of_day.dart';
 import 'package:amazon_clone_tutorial/features/home/widgets/top_categories.dart';
+import 'package:amazon_clone_tutorial/features/search/screens/search_screen.dart';
 
 import 'package:flutter/material.dart';
 
@@ -15,6 +16,10 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  void navigateToSearchScreen(String query) {
+    Navigator.pushNamed(context, SearchScreen.routeName, arguments: query);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,6 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     borderRadius: BorderRadius.circular(7),
                     elevation: 1,
                     child: TextFormField(
+                      onFieldSubmitted: navigateToSearchScreen,
                       decoration: InputDecoration(
                         prefixIcon: InkWell(
                             onTap: () {},
@@ -57,7 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           borderSide:
                               BorderSide(color: Colors.black38, width: 1),
                         ),
-                        hintText: "Search Amaxon.com",
+                        hintText: "Search Amacon.com",
                         hintStyle: const TextStyle(
                             fontWeight: FontWeight.w500, fontSize: 17),
                       ),
