@@ -4,6 +4,7 @@ const adminRouter = require("./routes/admin");
 require("dotenv").config();
 
 const authRouter = require("./routes/auth");
+const productRouter = require("./routes/product");
 
 const PORT = process.env.PORT || 3000;
 const app = express();
@@ -13,6 +14,7 @@ const DB = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@
 app.use(express.json())
 app.use(authRouter);
 app.use(adminRouter);
+app.use(productRouter);
 
 // Connections
 mongooose
