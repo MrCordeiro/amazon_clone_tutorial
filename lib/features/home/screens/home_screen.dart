@@ -63,7 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           borderSide:
                               BorderSide(color: Colors.black38, width: 1),
                         ),
-                        hintText: "Search Amacon.com",
+                        hintText: "Search Amazon.com",
                         hintStyle: const TextStyle(
                             fontWeight: FontWeight.w500, fontSize: 17),
                       ),
