@@ -11,6 +11,16 @@ class SearchedProduct extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    double avgRating = 0;
+    double totalRating = 0;
+    for (var rating in product.rating!) {
+      totalRating += rating.rating;
+    }
+    if (totalRating > 0) {
+      avgRating = totalRating / product.rating!.length;
+    }
+  
     return Column(children: [
       Container(
         margin: const EdgeInsets.symmetric(horizontal: 10),
@@ -19,7 +29,7 @@ class SearchedProduct extends StatelessWidget {
             // Image
             Image.network(
               product.images[0],
-              fit: BoxFit.fitWidth,
+              fit: BoxFit.contain,
               height: 135,
               width: 135,
             ),
@@ -42,7 +52,7 @@ class SearchedProduct extends StatelessWidget {
                 Container(
                   width: 235,
                   padding: const EdgeInsets.only(left: 10, top: 5),
-                  child: const Stars(rating: 4),
+                  child: Stars(rating: avgRating),
                 ),
 
                 // Free shipping
