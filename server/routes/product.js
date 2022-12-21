@@ -53,4 +53,28 @@ productRouter.post("/api/rate-product", auth, async (req, res) => {
   }
 });
 
+// Get "Deal of the Day" product: best rated product
+productRouter.get("/api/deal-of-day", auth, async (req, res) => {
+	try {
+		let products = await Product.find({});
+		// Calculate the total rating of each product and sort products by the total rating
+		products = products.sort((a, b) => {
+			let aRating = 0;
+			let bRating = 0;
+			for (const rating of a.ratings) {
+				aRating += rating.rating;
+			}
+			for (const rating of b.ratings) {
+				bRating += rating.rating;
+			}
+			return bRating - aRating;
+		});
+		res.json(products[0]); 
+
+	} catch (e) {
+		res.status(500).json({ error: e.message });
+	}
+});
+
+
 module.exports = productRouter;
