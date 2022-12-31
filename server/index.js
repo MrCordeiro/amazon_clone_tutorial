@@ -1,5 +1,5 @@
 const express = require("express");
-const mongooose = require("mongoose");
+const mongoose = require("mongoose");
 const adminRouter = require("./routes/admin");
 require("dotenv").config();
 
@@ -19,7 +19,7 @@ app.use(productRouter);
 app.use(userRouter);
 
 // Connections
-mongooose
+mongoose
 	.connect(DB)
 	.then(() => {
 		console.log("Connected to MongoDB");
