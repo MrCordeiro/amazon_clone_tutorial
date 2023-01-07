@@ -2,6 +2,7 @@ import 'package:amazon_clone_tutorial/common/widgets/bottom_bar.dart';
 import 'package:amazon_clone_tutorial/features/address/screens/address_screen.dart';
 import 'package:amazon_clone_tutorial/features/admin/screens/add_product_screen.dart';
 import 'package:amazon_clone_tutorial/features/auth/screens/auth_screen.dart';
+import 'package:amazon_clone_tutorial/features/cart/screens/cart_screen.dart';
 import 'package:amazon_clone_tutorial/features/home/screens/category_deals_screen.dart';
 import 'package:amazon_clone_tutorial/features/home/screens/home_screen.dart';
 import 'package:amazon_clone_tutorial/features/product_detail/screens/product_detail_screen.dart';
@@ -47,6 +48,11 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       var product = settings.arguments as Product;
       return MaterialPageRoute(
         builder: (_) => ProductDetailScreen(product: product),
+        settings: settings,
+      );
+    case CartScreen.routeName:
+      return MaterialPageRoute(
+        builder: (_) => const CartScreen(),
         settings: settings,
       );
     case AddressScreen.routeName:

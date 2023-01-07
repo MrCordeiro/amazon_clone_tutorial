@@ -48,22 +48,7 @@ class _AddressScreenState extends State<AddressScreen> {
     _cityController.dispose();
   }
 
-  void onApplePayResult(res) {
-    if (Provider.of<UserProvider>(context, listen: false)
-        .user
-        .address
-        .isEmpty) {
-      _addressServices.saveUserAddress(
-          context: context, address: addressToBeUsed);
-    }
-    _addressServices.placeOrder(
-      context: context,
-      address: addressToBeUsed,
-      totalSum: double.parse(widget.totalAmount),
-    );
-  }
-
-  void onGooglePayResult(res) {
+  void onPayCb(res) {
     if (Provider.of<UserProvider>(context, listen: false)
         .user
         .address
@@ -82,14 +67,18 @@ class _AddressScreenState extends State<AddressScreen> {
     addressToBeUsed = "";
 
     bool isForm = _addressLine1Controller.text.isNotEmpty ||
-        _addressLine2Controller.text.isNotEmpty ||
         _postalCodeController.text.isNotEmpty ||
         _cityController.text.isNotEmpty;
 
     if (isForm) {
       if (_addressFormKey.currentState!.validate()) {
-        addressToBeUsed =
-            '${_addressLine1Controller.text}, ${_addressLine2Controller.text}, ${_postalCodeController.text} - ${_cityController.text}';
+        if (_addressLine2Controller.text.isEmpty) {
+          addressToBeUsed =
+              '${_addressLine1Controller.text}, ${_postalCodeController.text} - ${_cityController.text}';
+        } else {
+          addressToBeUsed =
+              '${_addressLine1Controller.text}, ${_addressLine2Controller.text}, ${_postalCodeController.text} - ${_cityController.text}';
+        }
       } else {
         throw Exception('Please enter all the values!');
       }
@@ -173,7 +162,7 @@ class _AddressScreenState extends State<AddressScreen> {
               ApplePayButton(
                 paymentConfigurationAsset: 'applepay.json',
                 onPressed: () => onPayPressed(address),
-                onPaymentResult: onApplePayResult,
+                onPaymentResult: onPayCb,
                 width: double.infinity,
                 style: ApplePayButtonStyle.whiteOutline,
                 type: ApplePayButtonType.buy,
@@ -185,7 +174,7 @@ class _AddressScreenState extends State<AddressScreen> {
               GooglePayButton(
                 paymentConfigurationAsset: 'gpay.json',
                 onPressed: () => onPayPressed(address),
-                onPaymentResult: onGooglePayResult,
+                onPaymentResult: onPayCb,
                 paymentItems: paymentItems,
                 height: 50,
                 type: GooglePayButtonType.buy,

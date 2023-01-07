@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:amazon_clone_tutorial/constants/error_handling.dart';
 import 'package:amazon_clone_tutorial/constants/global_variables.dart';
 import 'package:amazon_clone_tutorial/constants/utils.dart';
+import 'package:amazon_clone_tutorial/features/cart/screens/cart_screen.dart';
 import 'package:amazon_clone_tutorial/models/product.dart';
 import 'package:amazon_clone_tutorial/models/user.dart';
 import 'package:amazon_clone_tutorial/providers/user_provider.dart';
@@ -33,6 +34,7 @@ class ProductDetailServices {
         onSuccess: () {
           User user = userProvider.user.copyWith(cart: jsonDecode(res.body)['cart']);
           userProvider.setUserFromModel(user);
+          Navigator.pushNamed(context, CartScreen.routeName);
         },
       );
     } catch (e) {

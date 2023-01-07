@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class CartScreen extends StatefulWidget {
+  static const String routeName = '/cart';
   const CartScreen({Key? key}) : super(key: key);
 
   @override
@@ -35,7 +36,7 @@ class _CartScreenState extends State<CartScreen> {
     final user = context.watch<UserProvider>().user;
     int sum = 0;
     user.cart
-        .map((e) => sum += e['quantity'] * e['product']['price'] as int)
+        .map((e) => sum += e['quantity'] * e['product']['price'].toInt() as int)
         .toList();
 
     return Scaffold(
