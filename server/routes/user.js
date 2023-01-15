@@ -2,6 +2,7 @@ const express = require("express");
 const auth = require("../middlewares/auth");
 const { Product } = require("../models/product");
 const User = require("../models/user");
+const Order = require("../models/order");
 
 const userRouter = express.Router();
 
@@ -93,6 +94,15 @@ userRouter.post("api/order", auth, async (req, res) => {
 	} catch (e) {
 		res.status(500).json({ error: e.message });
 	}
+});
+
+userRouter.get("/api/orders/me", auth, async (req, res) => {
+  try {
+    const orders = await Order.find({ userId: req.user });
+    res.json(orders);
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
 });
 
 module.exports = userRouter;
