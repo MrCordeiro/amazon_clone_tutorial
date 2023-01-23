@@ -50,13 +50,26 @@ adminRouter.delete("/admin/products/:id", admin, async (req, res) => {
 
 // Get all orders
 adminRouter.get("/admin/orders", admin, async (req, res) => {
-  try {
-    const orders = await Order.find({});
-    res.json(orders);
-  } catch (e) {
-    res.status(500).json({ error: e.message });
-  }
+	try {
+		const orders = await Order.find({});
+		res.json(orders);
+	} catch (e) {
+		res.status(500).json({ error: e.message });
+	}
 });
 
+// Update order status
+adminRouter.put("/admin/change-order-status", admin, async (req, res) => {
+	try {
+		const { id, status } = req.body;
+		let order = await Order.findById(id);
+		order.status = status;
+		order = await order.save();
+		res.json(order);
+	} catch (e) {
+		res.status(500).json({ error: e.message });
+	}
+});
 
 module.exports = adminRouter;
+

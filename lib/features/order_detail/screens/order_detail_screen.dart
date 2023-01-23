@@ -1,8 +1,12 @@
+import 'package:amazon_clone_tutorial/common/widgets/custom_button.dart';
 import 'package:amazon_clone_tutorial/constants/global_variables.dart';
+import 'package:amazon_clone_tutorial/features/admin/services/admin_services.dart';
 import 'package:amazon_clone_tutorial/features/search/screens/search_screen.dart';
 import 'package:amazon_clone_tutorial/models/order.dart';
+import 'package:amazon_clone_tutorial/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class OrderDetailScreen extends StatefulWidget {
   static const String routeName = '/order-detail';
@@ -18,6 +22,7 @@ class OrderDetailScreen extends StatefulWidget {
 
 class _OrderDetailScreenState extends State<OrderDetailScreen> {
   int currentStep = 0;
+  final AdminServices _adminServices = AdminServices();
 
   void navigateToSearchScreen(String query) {
     Navigator.pushNamed(context, SearchScreen.routeName, arguments: query);
@@ -29,8 +34,24 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
     currentStep = widget.order.status;
   }
 
+  // TODO: Validate user type so that only admin can alter status
+  void changeOrderStatus(int status) {
+    int updatedStatus = status++;
+    _adminServices.changeOrderStatus(
+      context: context,
+      status: updatedStatus,
+      order: widget.order,
+      onSuccess: () {
+        setState(() {
+          currentStep = updatedStatus;
+        });
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<UserProvider>(context).user;
     return Scaffold(
         appBar: PreferredSize(
           preferredSize: const Size.fromHeight(60),
@@ -167,8 +188,15 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                             child: Stepper(
                               currentStep: currentStep,
                               controlsBuilder: (context, details) {
-                                // Return an empty SizedBox as we don't 
-                                // want to show any controls
+                                // If user is an admin, return controls
+                                if (user.type == 'admin') {
+                                  return CustomButton(
+                                      text: 'Done',
+                                      onTap: () => changeOrderStatus(
+                                          details.currentStep));
+                                }
+                                // Otherwise, return an empty SizedBox as we
+                                // don't want to show any controls
                                 return const SizedBox();
                               },
                               steps: [
