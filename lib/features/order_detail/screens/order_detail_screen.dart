@@ -34,7 +34,6 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
     currentStep = widget.order.status;
   }
 
-  // TODO: Validate user type so that only admin can alter status
   void changeOrderStatus(int status) {
     int updatedStatus = status++;
     _adminServices.changeOrderStatus(
