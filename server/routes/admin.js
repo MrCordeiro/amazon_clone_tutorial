@@ -71,5 +71,47 @@ adminRouter.put("/admin/change-order-status", admin, async (req, res) => {
 	}
 });
 
+// Get total and category earnings
+async function _fetchEarnings(category = null) {
+	const orders = category
+		? await Order.find({ "products.product.category": category })
+		: await Order.find({});
+
+	return orders.reduce((acc, order) => {
+		return (
+			acc +
+			order.reduce((subtotal, product) => {
+				return subtotal + product.price * product.quantity;
+			}, 0)
+		);
+	}, 0);
+}
+
+adminRouter.get("/admin/analytics", admin, async (req, res) => {
+	try {
+		// Total Earnings
+		const totalEarnings = await _fetchEarnings();
+		// Category Earnings
+		const mobileEarnings = await _fetchEarnings("Mobiles");
+		const essentialEarnings = await _fetchEarnings("Essentials");
+		const applianceEarnings = await _fetchEarnings("Appliances");
+		const booksEarnings = await _fetchEarnings("Books");
+		const fashionEarnings = await _fetchEarnings("Fashion");
+
+		const earnings = {
+			totalEarnings,
+			mobileEarnings,
+			essentialEarnings,
+			applianceEarnings,
+			booksEarnings,
+			fashionEarnings,
+		};
+
+		res.json(earnings);
+	} catch (e) {
+		res.status(500).json({ error: e.message });
+	}
+});
+
 module.exports = adminRouter;
 
