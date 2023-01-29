@@ -1,5 +1,3 @@
-<!-- https://youtu.be/ylJz7N-dv1E?t=29105 -->
-
 # amazon_clone_tutorial
 
 As of any Flutter project, this one was created with the IDE's "Create new Flutter project option".
